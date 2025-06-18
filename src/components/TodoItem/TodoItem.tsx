@@ -8,33 +8,31 @@ type TodoItemProps = {
   todo: Todo;
   isTemp?: boolean;
   onDeleteTodo?: (todoId: number) => Promise<void>;
-  isDeleting?: boolean;
   onToggleTodo?: (todoId: number, completed: boolean) => Promise<void>;
-  isUpdating?: boolean;
   isEditing?: boolean;
   editingTitle?: string;
   onStartEdit?: (todoId: number, title: string) => void;
   onCancelEdit?: () => void;
   onSaveEdit?: (todoId: number, title: string) => Promise<void>;
   setEditingTitle?: (title: string) => void;
+  processingWithTodos?: boolean;
 };
 
 export const TodoItem: React.FC<TodoItemProps> = ({
   todo,
   isTemp,
   onDeleteTodo,
-  isDeleting,
   onToggleTodo,
-  isUpdating,
   isEditing,
   editingTitle,
   onStartEdit,
   onCancelEdit,
   onSaveEdit,
   setEditingTitle,
+  processingWithTodos,
 }) => {
   const inputId = `todo-status-${todo.id}`;
-  const processingWithTodos = isTemp || isDeleting || isUpdating;
+
   const editInputFocusRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {

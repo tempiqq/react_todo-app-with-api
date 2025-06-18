@@ -5,35 +5,32 @@ import { TodoItem } from '../TodoItem';
 type TodoListProps = {
   todos: Todo[];
   onDeleteTodo: (todoId: number) => Promise<void>;
-  deletingTodoId: number | null;
   onToggleTodo: (todoId: number, completed: boolean) => Promise<void>;
-  isUpdatingTodoId: number | null;
   editingTodoId: number | null;
   editingTitle: string;
   onStartEdit: (todoId: number, title: string) => void;
   onCancelEdit: () => void;
   onSaveEdit: (todoId: number, title: string) => Promise<void>;
   setEditingTitle: (title: string) => void;
+  processingTodoIds: number[];
 };
 
 export const TodoList: React.FC<TodoListProps> = ({
   todos,
   onDeleteTodo,
-  deletingTodoId,
   onToggleTodo,
-  isUpdatingTodoId,
   editingTodoId,
   editingTitle,
   onStartEdit,
   onCancelEdit,
   onSaveEdit,
   setEditingTitle,
+  processingTodoIds,
 }) => {
   return (
     <section className="todoapp__main" data-cy="TodoList">
       {todos.map(todo => {
-        const isDeleting = todo.id === deletingTodoId;
-        const isUpdating = todo.id === isUpdatingTodoId;
+        const isProcessing = processingTodoIds.includes(todo.id);
         const isEditing = todo.id === editingTodoId;
 
         return (
@@ -41,8 +38,6 @@ export const TodoList: React.FC<TodoListProps> = ({
             key={todo.id}
             todo={todo}
             onDeleteTodo={onDeleteTodo}
-            isDeleting={isDeleting}
-            isUpdating={isUpdating}
             onToggleTodo={onToggleTodo}
             isEditing={isEditing}
             editingTitle={editingTitle}
@@ -50,6 +45,7 @@ export const TodoList: React.FC<TodoListProps> = ({
             onCancelEdit={onCancelEdit}
             onSaveEdit={onSaveEdit}
             setEditingTitle={setEditingTitle}
+            processingWithTodos={isProcessing}
           />
         );
       })}

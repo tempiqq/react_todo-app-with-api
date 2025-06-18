@@ -6,7 +6,7 @@ type TodoHeaderProps = {
   newTodoTitle: string;
   setNewTodoTitle: (title: string) => void;
   isAddingTodo: boolean;
-  isDeletingAnyTodo: boolean;
+  isProcessingAnyTodo: boolean;
   everyTodosCompleted: boolean;
   onToggleAllTodos: () => Promise<void>;
   isTogglingAllTodos: boolean;
@@ -19,7 +19,7 @@ export const TodoHeader: React.FC<TodoHeaderProps> = ({
   newTodoTitle,
   setNewTodoTitle,
   isAddingTodo,
-  isDeletingAnyTodo,
+  isProcessingAnyTodo,
   everyTodosCompleted,
   onToggleAllTodos,
   isTogglingAllTodos,
@@ -28,11 +28,11 @@ export const TodoHeader: React.FC<TodoHeaderProps> = ({
 }) => {
   const newFieldFocusRef = useRef<HTMLInputElement>(null);
   const anyProcessingWithTodo =
-    isAddingTodo || isDeletingAnyTodo || isTogglingAllTodos;
+    isAddingTodo || isProcessingAnyTodo || isTogglingAllTodos;
 
   useEffect(() => {
     newFieldFocusRef.current?.focus();
-  }, [isAddingTodo, isDeletingAnyTodo]);
+  }, [isAddingTodo, isProcessingAnyTodo]);
 
   const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
@@ -44,7 +44,7 @@ export const TodoHeader: React.FC<TodoHeaderProps> = ({
     await onAddTodo(newTodoTitle);
   };
 
-  const isDisabled = isAddingTodo || isDeletingAnyTodo;
+  const isDisabled = isAddingTodo || isProcessingAnyTodo;
 
   return (
     <header className="todoapp__header">
